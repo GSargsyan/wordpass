@@ -1,6 +1,5 @@
 import argparse
 import math
-import re
 
 from helpers import pp, NoSuchKeyError, throw
 
@@ -11,15 +10,19 @@ def strength(password):
     score = 1
     total_ns = 0
     for i in range(len(password) - 1):
+        if password[i] == password[i + 1]:
+            total_ns += 1
+            continue
+            
         neighbs = neighbors(password[i])
         for side, ns in neighbs.items():
             if password[i + 1] in ns:
                 total_ns += 1
+                break
     penalty = 0
     if total_ns != 0:
         penalty = total_ns / len(password)
     return round(score - penalty, 3)
-
 
 
 def neighbors(key):
